@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Modelo para Voluntários
+model Voluntary {
+  id         String                @id @default(cuid())
+  name       String
+  cpf        String
+  isKids     Boolean               @default(false)
+  useImage   Boolean               @default(true)
+  dateAssign DateTime              @default(now())
+  
+  // Relacionamento um-para-um opcional com o responsável (caso isKids seja true)
+  responsable VoluntaryResponsable?
+
+  @@map("voluntaries")
+}
+
+// Modelo para Responsável pelo Voluntário Criança
+model VoluntaryResponsable {
+  id         String    @id @default(cuid())
+  childrenId String    @unique
+  name       String
+  cpf        String
+  kinship    String
+  useImage   Boolean   @default(true)
+  
+  children   Voluntary @relation(fields: [childrenId], references: [id], onDelete: Cascade)
+
+  @@map("voluntary_responsables")
+}
+
+// Modelo para Batismos
+model Baptism {
+  id              String   @id @default(cuid())
+  name            String
+  cpf             String?
+  isKids          Boolean  @default(false)
+  dateBaptism     DateTime
+  responsableName String?
+  responsableCpf  String?
+
+  @@map("baptisms")
+}
