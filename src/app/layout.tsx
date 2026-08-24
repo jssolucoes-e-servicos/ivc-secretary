@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import Sidebar from "@/components/Sidebar";
+import AppLayoutWrapper from "@/components/AppLayoutWrapper";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,10 +20,7 @@ export default async function RootLayout({
     <html lang="pt-BR">
       <body>
         {hasToken ? (
-          <div className="app-container">
-            <Sidebar />
-            <main className="main-content">{children}</main>
-          </div>
+          <AppLayoutWrapper>{children}</AppLayoutWrapper>
         ) : (
           <div className="login-wrapper">{children}</div>
         )}
